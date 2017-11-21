@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
-import { helloWorld, helloWorld2 } from "./ps/output/HelloWorld";
+import { helloWorld, helloWorld2, helloWorld4 } from "./ps/output/HelloWorld";
 import "./App.css";
 
 class App extends Component {
@@ -17,6 +17,7 @@ class App extends Component {
         <p>ja</p>
         {helloWorld()}
         {helloWorld2}
+        {helloWorld4}
       </div>
     );
   }
