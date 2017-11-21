@@ -22,3 +22,6 @@ helloWorld = createClassStateless helloText
     helloText :: Unit -> ReactElement
     helloText _ = D.h1 [] [D.text "hello dfkajk world"]
 
+helloWorld2 :: ReactElement
+helloWorld2 = createFactory helloWorld unit
+
