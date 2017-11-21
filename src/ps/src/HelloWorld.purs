@@ -4,10 +4,12 @@ import Prelude
 import React.DOM as D
 import React.DOM.Props as P
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (log)
 import DOM (DOM())
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToDocument)
 import DOM.HTML.Window (document)
+import Data.Int (decimal, toStringAs)
 import DOM.Node.NonElementParentNode (getElementById)
 import DOM.Node.Types (Element, ElementId(..), documentToNonElementParentNode)
 import React (createClass, spec, createFactory, ReactClass, ReactElement, createClassStateless)
@@ -17,6 +19,11 @@ import Data.Nullable (toMaybe)
 import ReactDOM (render)
 import React
 import Data.Unit (unit)
+
+foreign import interval :: forall eff a.
+                             Int ->
+                             Eff eff a ->
+                             Eff eff Unit
 
 helloWorld :: ReactClass Unit
 helloWorld = createClassStateless helloText
@@ -42,3 +49,43 @@ helloWorld3 = createClass $ spec unit \ctx -> do
 helloWorld4 :: ReactElement
 helloWorld4 = createFactory helloWorld3 { name: "world "}
 
+newtype AppState = AppState
+  { count :: Int }
+
+
+helloWorld5 :: forall props. ReactClass props
+helloWorld5 = createClass counterSpec
+  where
+  
+  initialState :: AppState
+  initialState = AppState { count: 0  }
+
+  counterSpec = (spec initialState render1)
+      { componentDidMount = \ctx ->
+          interval 1000 $ do
+            readState ctx >>=
+              toString >>> log
+      }
+ 
+  toString :: AppState -> String
+  toString ( AppState { count } )  =
+        toStringAs decimal count
+
+  addOne :: AppState -> AppState
+  addOne ( AppState { count } ) = do
+      AppState { count: count + 1 }
+
+  render1 ctx = do
+    count <- readState ctx
+    pure $ D.button [ P.className "Counter"
+                    , P.onClick \_ -> do
+                        readState ctx >>=
+                          addOne >>> writeState ctx
+                    ]
+                    [ D.text (toString count)
+                    , D.text " Click me to increment!"
+                    ]
+
+
+helloWorld6 :: ReactElement
+helloWorld6 = createFactory helloWorld5 unit
