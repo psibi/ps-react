@@ -1,0 +1,23 @@
+{
+  "name": "treact",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Sibi Prabakaran <sibi@psibi.in>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-react": "^5.0.0",
+    "purescript-react-dom": "^4.1.0",
+    "purescript-console": "^3.0.0"
+  }
+}
