@@ -4,7 +4,8 @@ import {
   helloWorld,
   helloWorld2,
   helloWorld4,
-  helloWorld6
+  helloWorld6,
+  helloWorld8
 } from "./ps/output/HelloWorld";
 import "./App.css";
 
@@ -24,6 +25,7 @@ class App extends Component {
         {helloWorld2}
         {helloWorld4}
         {helloWorld6}
+        {helloWorld8}
       </div>
     );
   }

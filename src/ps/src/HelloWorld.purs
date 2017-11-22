@@ -4,7 +4,7 @@ import Prelude
 import React.DOM as D
 import React.DOM.Props as P
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (log)
+import Control.Monad.Eff.Console (log, CONSOLE)
 import DOM (DOM())
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToDocument)
@@ -89,3 +89,34 @@ helloWorld5 = createClass counterSpec
 
 helloWorld6 :: ReactElement
 helloWorld6 = createFactory helloWorld5 unit
+
+type ReactEff e = ( props :: ReactProps, refs :: ReactRefs (read :: Read), state :: ReactState ReadWrite | e)
+
+type ReactCEff eff = ( props :: ReactProps, refs :: ReactRefs (read :: Read), state :: ReactState ReadWrite, console :: CONSOLE | eff)
+
+helloWorld7 :: forall props eff.
+  ReactClass
+    { routeToUrl :: String
+                    -> Unit
+                    -> Eff (ReactCEff eff) Unit
+    , name :: String
+    | props
+    }
+helloWorld7 = createClass $ spec unit \ctx -> do
+  props <- getProps ctx
+  pure $ D.h1 [ P.className "Hello"
+              , P.style { background: "lightgray" }
+              , P.onClick \_ -> do
+                  props.routeToUrl "Hello" unit
+                  log "hell"
+                  pure unit
+              ]
+              [ D.text "Click handler "
+              , D.text props.name
+              ]
+
+someEff :: forall eff.  String -> Unit -> Eff (console :: CONSOLE | eff) Unit
+someEff x _ = log x
+
+helloWorld8 :: ReactElement
+helloWorld8 = createFactory helloWorld7 { name: "world ", routeToUrl: someEff}
