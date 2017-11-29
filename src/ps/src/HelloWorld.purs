@@ -120,3 +120,10 @@ someEff x _ = log x
 
 helloWorld8 :: ReactElement
 helloWorld8 = createFactory helloWorld7 { name: "world ", routeToUrl: someEff}
+
+helloWorld9 :: forall props eff. { routeToUrl :: String
+                                              -> Unit
+                                              -> Eff (ReactCEff eff) Unit
+                                 , name :: String
+                                   | props} -> ReactElement
+helloWorld9 props = createFactory helloWorld7 props

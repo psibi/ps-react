@@ -5,6 +5,7 @@ import {
   helloWorld2,
   helloWorld4,
   helloWorld6,
+  helloWorld9,
   helloWorld8
 } from "./ps/output/HelloWorld";
 import "./App.css";
@@ -26,6 +27,10 @@ class App extends Component {
         {helloWorld4}
         {helloWorld6}
         {helloWorld8}
+        {helloWorld9({
+          name: "world",
+          routeToUrl: a => b => () => console.log(a)
+        })}
       </div>
     );
   }
